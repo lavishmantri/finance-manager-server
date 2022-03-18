@@ -1,0 +1,5 @@
+# Custom scalar for JSON
+scalar JSON
+scalar JSONObject
+scalar Long
+scalar GUID

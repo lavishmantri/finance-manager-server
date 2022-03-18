@@ -1,0 +1,26 @@
+enum TransactionMode {
+  CASH
+  NEFT
+  RTGS
+  UPI
+  CREDIT_CARD
+  DEBIT_CARD
+  PAY_LATER
+  E_WALLET
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+type Transaction {
+  id: String!
+  description: String
+  type: TransactionType
+  mode: TransactionMode
+}
+
+type Query {
+  getTransactionList: [Transaction]
+}
