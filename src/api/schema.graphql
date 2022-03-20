@@ -1,5 +1,8 @@
+# import Mutation from './upload/upload.graphql'
+
 # Custom scalar for JSON
 scalar JSON
 scalar JSONObject
 scalar Long
 scalar GUID
+scalar Upload

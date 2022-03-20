@@ -1,0 +1,16 @@
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
+type Status {
+  status: String
+}
+
+type Mutation {
+  # Multiple uploads are supported. See graphql-upload docs for details.
+  uploadFile(file: Upload!): File!
+
+  readFile(filePath: String!): Status
+}

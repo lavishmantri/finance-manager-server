@@ -1,7 +1,10 @@
 import { QueryResolvers } from '../../generated/graphql-types';
 
 const queryResolvers: QueryResolvers = {
-  getTransactionList: () => [],
+  getTransactionList: () => {
+    console.log('transaction list resolver');
+    return [];
+  },
 };
 
 export const transactionResolver = {
