@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "debug": "node --inspect=9229 -r ts-node/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -16,12 +17,14 @@
     "@graphql-tools/utils": "^8.6.3",
     "apollo-server": "^3.6.4",
     "apollo-server-express": "^3.6.4",
+    "csv-parse": "^5.0.4",
     "express": "^4.17.3",
     "graphql": "^16.3.0",
     "graphql-upload": "^13.0.0",
     "lodash": "^4.17.21",
     "mongodb": "^4.4.1",
-    "mongoose": "^6.2.7"
+    "mongoose": "^6.2.7",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",

@@ -1,6 +1,11 @@
-import { fixSchemaAst } from '@graphql-tools/utils';
+import { parse } from 'csv-parse';
 import { GraphQLUpload } from 'graphql-upload';
 import fs from 'fs';
+import { insertManyLoanTransactions } from '../../models/transaction/loan-transaction/loan-transaction';
+
+const parser = parse({
+  delimiter: ',',
+});
 
 export const uploadResolver = {
   Upload: GraphQLUpload,
@@ -40,14 +45,31 @@ export const uploadResolver = {
       return { filename, mimetype, encoding };
     },
 
-    readFile: async (parent, { filename }) => {
+    readFile: async (parent, { filePath }) => {
       console.log('Here');
       let status = '';
       try {
-        const data = fs.readFileSync(
-          '/Users/lavishmantri/My Documents/Financial/Loans/Master.numbers',
-        );
-        console.log(data);
+        const stream = fs
+          .createReadStream(filePath, { encoding: 'utf8' })
+          .pipe(parser);
+
+        let records = [];
+        parser.on('readable', function () {
+          let record;
+          while ((record = parser.read()) !== null) {
+            records.push(record);
+          }
+        });
+        // Catch any error
+        parser.on('error', function (err) {
+          console.error(err.message);
+        });
+        // Test that the parsed records matched the expected records
+        parser.on('end', function () {
+          insertManyLoanTransactions(records.slice(1));
+          console.log('Parser end:: ', records);
+        });
+
         status = 'success';
       } catch (err) {
         console.error(err);

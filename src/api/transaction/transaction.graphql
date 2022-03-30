@@ -17,8 +17,8 @@ enum TransactionType {
 type Transaction {
   id: String!
   description: String
-  type: TransactionType
-  mode: TransactionMode
+  type: TransactionType!
+  mode: TransactionMode!
 }
 
 type Query {

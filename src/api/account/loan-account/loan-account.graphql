@@ -1,0 +1,19 @@
+type LoanAccount {
+  id: String!
+  name: String!
+  description: String
+}
+
+type Query {
+  getLoanAccounts: [LoanAccount]
+}
+
+type Mutation {
+  addLoanAccount(
+    "name of the account, could be name of the Person"
+    name: String!
+
+    "Any useful description of the account that we must keep track of"
+    description: String
+  ): LoanAccount!
+}

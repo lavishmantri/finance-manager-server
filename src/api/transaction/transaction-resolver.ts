@@ -1,9 +1,20 @@
-import { QueryResolvers } from '../../generated/graphql-types';
+import {
+  QueryResolvers,
+  TransactionMode,
+  TransactionType,
+} from '../../generated/graphql-types';
 
 const queryResolvers: QueryResolvers = {
   getTransactionList: () => {
     console.log('transaction list resolver');
-    return [];
+    return [
+      {
+        id: 'abcd_some_uuid',
+        description: 'This is the first mocked transaction',
+        type: TransactionType.Credit,
+        mode: TransactionMode.Neft,
+      },
+    ];
   },
 };
 

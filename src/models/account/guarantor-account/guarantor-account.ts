@@ -4,7 +4,7 @@ const GuarantorAccountSchema = new mongoose.Schema({
   name: String,
 });
 
-export const GuarantorAccountModel = new mongoose.Model(
+export const GuarantorAccount = mongoose.model(
   'GuarantorAccount',
   GuarantorAccountSchema,
 );
