@@ -27,9 +27,9 @@ const loanAccountMutationResolver: MutationResolvers = {
       throw e;
     }
 
-    console.log('Loan account resolved  ', loan.toObject());
+    console.log('Loan account resolved  ', loan);
 
-    return loan.toObject({ virtuals: true });
+    return loan;
   },
 };
 

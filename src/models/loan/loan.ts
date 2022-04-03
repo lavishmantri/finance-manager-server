@@ -38,7 +38,7 @@ const loanSchema = new mongoose.Schema({
 export const LoanModel = mongoose.model('Loan', loanSchema);
 
 export const fetchLoans = async () => {
-  return await LoanModel.find({});
+  return await LoanModel.find({}).exec();
 };
 
 export const insertLoan = async (
@@ -51,15 +51,21 @@ export const insertLoan = async (
   guarantor?: string,
 ) => {
   const loanAccountInstance = await findLoanAccountById(loanAccount);
-  const guarantorAccountInstance = await findGuarantorById(guarantor);
+  let guarantorAccountInstance;
 
-  return new LoanModel({
+  if (guarantor) {
+    guarantorAccountInstance = await findGuarantorById(guarantor);
+  }
+
+  const loan = await new LoanModel({
     interestRate,
     principal,
     loanAccount: loanAccountInstance._id,
     basis,
     startingDate: date,
     notes,
-    guarantor: guarantorAccountInstance._id,
+    guarantor: guarantorAccountInstance?._id,
   }).save();
+
+  return loan.toObject({ virtuals: true });
 };

@@ -34,7 +34,8 @@ const mutationResolvers: MutationResolvers = {
       guarantor,
     );
 
-    return loan.toObject();
+    console.log('Loan created:: ', loan);
+    return loan;
   },
 };
 

@@ -19,8 +19,10 @@ export const findLoanAccountById = (id: string) => {
 };
 
 export const insertLoanAccount = (name: string, description: string = '') => {
-  return new LoanAccount({
+  const loanAccount = new LoanAccount({
     name,
     description,
   }).save();
+
+  return loanAccount.toObject({ virtuals: true });
 };
