@@ -1,30 +1,27 @@
 import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
 import {
-  insertLoan,
-  LoanAccountModel,
+  insertLoanAccount,
+  LoanAccount,
 } from '../../account/loan-account/loan-account';
 import { GuarantorAccount } from '../../account/guarantor-account/guarantor-account';
 
 enum LoanTransactionType {
-  PRIMARY_DEBIT = 'PRIMARY_DEBIT',
+  NOT_DEFINED = 'NOT_DEFINED',
   INTEREST_PAYMENT = 'INTEREST_PAYMENT',
   PRINCIPAL_REPAYMENT = 'PRINCIPAL_REPAYMENT',
 }
 
 const loanTransactionSchema = new mongoose.Schema({
-  to: { type: ObjectId, ref: LoanAccountModel },
+  to: { type: ObjectId, ref: LoanAccount },
   amount: Number,
-  interest: Number,
-  estimatedDuration: Number,
   type: {
     type: String,
     enum: LoanTransactionType,
-    default: LoanTransactionType.PRIMARY_DEBIT,
+    default: LoanTransactionType.INTEREST_PAYMENT,
   },
   notes: String,
-  startDate: Date,
-  guarantor: { type: ObjectId, ref: GuarantorAccount },
+  date: Date,
 });
 
 export const LoanTransactionModel = mongoose.model(
@@ -32,13 +29,15 @@ export const LoanTransactionModel = mongoose.model(
   loanTransactionSchema,
 );
 
+// TODO:: need to adapt to new schema
+
 export const insertManyLoanTransactions = async (records: string[][]) => {
   await records.forEach(async record => {
     let insertedLoan;
     let loan;
 
     try {
-      insertedLoan = await insertLoan(record[0]);
+      insertedLoan = await insertLoanAccount(record[0]);
       loan = insertedLoan.toObject();
     } catch (e) {
       console.error('Error inserting Loan:: ', e);
@@ -46,7 +45,7 @@ export const insertManyLoanTransactions = async (records: string[][]) => {
 
     let guarantor;
     if (record[4]) {
-      const insertedGuarantor = await insertLoan(record[4]);
+      const insertedGuarantor = await insertLoanAccount(record[4]);
       guarantor = insertedGuarantor.toObject();
     }
 
@@ -54,10 +53,8 @@ export const insertManyLoanTransactions = async (records: string[][]) => {
       to: loan._id,
       amount: record[1] ? Number.parseInt(record[1]) : 0,
       startDate: new Date(record[2]),
-      type: LoanTransactionType.PRIMARY_DEBIT,
-      guarantor: guarantor?._id,
+      type: LoanTransactionType.INTEREST_PAYMENT,
       notes: record[5],
-      interest: Number.parseFloat(record[7]),
     }).save();
   });
 };

@@ -5,7 +5,7 @@ import {
 } from '../../../generated/graphql-types';
 import {
   fetchLoanAccounts,
-  insertLoan,
+  insertLoanAccount,
 } from '../../../models/account/loan-account/loan-account';
 
 const loanAccountQueryResolver: QueryResolvers = {
@@ -22,7 +22,7 @@ const loanAccountMutationResolver: MutationResolvers = {
   addLoanAccount: async (parent, { name, description }) => {
     let loan;
     try {
-      loan = await insertLoan(name, description);
+      loan = await insertLoanAccount(name, description);
     } catch (e) {
       throw e;
     }

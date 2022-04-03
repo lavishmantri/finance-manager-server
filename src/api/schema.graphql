@@ -1,5 +1,3 @@
-# import Mutation from './upload/upload.graphql'
-
 # Custom scalar for JSON
 scalar JSON
 scalar JSONObject

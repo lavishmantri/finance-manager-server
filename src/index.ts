@@ -6,6 +6,7 @@ import {
   graphqlUploadExpress, // A Koa implementation is also exported.
 } from 'graphql-upload';
 import { resolvers } from './api/resolvers';
+import 'dotenv/config';
 
 const initServer = () => {
   // The ApolloServer constructor requires two parameters: your schema

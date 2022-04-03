@@ -8,17 +8,18 @@ const loanAccountSchema = new mongoose.Schema({
   description: String,
 });
 
-export const LoanAccountModel = mongoose.model(
-  'LoanAccount',
-  loanAccountSchema,
-);
+export const LoanAccount = mongoose.model('LoanAccount', loanAccountSchema);
 
 export const fetchLoanAccounts = async () => {
-  return await LoanAccountModel.find({});
+  return await LoanAccount.find({});
 };
 
-export const insertLoan = (name: string, description: string = '') => {
-  return new LoanAccountModel({
+export const findLoanAccountById = (id: string) => {
+  return LoanAccount.findById(id).exec();
+};
+
+export const insertLoanAccount = (name: string, description: string = '') => {
+  return new LoanAccount({
     name,
     description,
   }).save();

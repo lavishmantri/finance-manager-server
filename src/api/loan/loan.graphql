@@ -1,0 +1,32 @@
+enum LoanBasis {
+  BASIS_1
+  BASIS_2
+}
+
+type Loan {
+  id: String!
+  interestRate: Int!
+  principal: Int!
+  basis: LoanBasis!
+  duration: String
+  date: String
+  notes: String
+  guarantor: String
+}
+
+type Query {
+  getLoansList: [Loan]
+}
+
+type Mutation {
+  createLoan(
+    interestRate: Int!
+    principal: Int!
+    loanAccount: String!
+    basis: LoanBasis!
+    duration: String
+    date: String
+    notes: String
+    guarantor: String
+  ): Loan!
+}

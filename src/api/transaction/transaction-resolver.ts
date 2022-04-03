@@ -11,8 +11,8 @@ const queryResolvers: QueryResolvers = {
       {
         id: 'abcd_some_uuid',
         description: 'This is the first mocked transaction',
-        type: TransactionType.Credit,
-        mode: TransactionMode.Neft,
+        type: TransactionType.CREDIT,
+        mode: TransactionMode.NEFT,
       },
     ];
   },
