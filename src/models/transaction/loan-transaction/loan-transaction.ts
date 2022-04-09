@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import {
   insertLoanAccount,
   LoanAccount,
+  LoanAccountModel,
 } from '../../account/loan-account/loan-account';
 import { GuarantorAccount } from '../../account/guarantor-account/guarantor-account';
 
@@ -13,7 +14,7 @@ enum LoanTransactionType {
 }
 
 const loanTransactionSchema = new mongoose.Schema({
-  to: { type: ObjectId, ref: LoanAccount },
+  to: { type: ObjectId, ref: LoanAccountModel },
   amount: Number,
   type: {
     type: String,
@@ -46,7 +47,7 @@ export const insertManyLoanTransactions = async (records: string[][]) => {
     let guarantor;
     if (record[4]) {
       const insertedGuarantor = await insertLoanAccount(record[4]);
-      guarantor = insertedGuarantor.toObject();
+      guarantor = insertedGuarantor;
     }
 
     await new LoanTransactionModel({

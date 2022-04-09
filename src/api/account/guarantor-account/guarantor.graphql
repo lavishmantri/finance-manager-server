@@ -1,0 +1,4 @@
+type GuarantorAccount {
+  id: String!
+  name: String!
+}

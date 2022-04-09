@@ -1,12 +1,30 @@
 import {
+  Loan,
   MutationResolvers,
   QueryResolvers,
 } from '../../generated/graphql-types';
 import { fetchLoans, insertLoan } from '../../models/loan/loan';
 
 const queryResolvers: QueryResolvers = {
-  getLoansList: () => {
-    return fetchLoans();
+  getLoansList: async () => {
+    const loans = await fetchLoans();
+    console.log('getLoansList resolver  ', loans);
+
+    // return loans;
+    const ls = loans.map(l => ({
+      ...l,
+      id: l.id.toString(),
+      guarantor: l.guarantor
+        ? {
+            name: l.guarantor?.name,
+            id: l.guarantor?.id.toString(),
+          }
+        : undefined,
+    }));
+
+    // console.log('loans list resolver transformed:: ', ls);
+
+    return ls;
   },
 };
 
@@ -22,6 +40,7 @@ const mutationResolvers: MutationResolvers = {
       date,
       notes,
       guarantor,
+      tags,
     },
   ) => {
     const loan = await insertLoan(
@@ -32,10 +51,18 @@ const mutationResolvers: MutationResolvers = {
       date,
       notes,
       guarantor,
+      tags,
     );
 
     console.log('Loan created:: ', loan);
-    return loan;
+    return {
+      ...loan,
+      id: loan.id.toString(),
+      guarantor: {
+        id: loan.guarantor?.id,
+        name: loan.guarantor?.name,
+      },
+    };
   },
 };
 

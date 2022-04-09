@@ -1,6 +1,12 @@
 import mongoose from 'mongoose';
 
-const loanAccountSchema = new mongoose.Schema({
+export interface LoanAccount extends Document {
+  id: string;
+  name: string;
+  description?: string;
+}
+
+const loanAccountSchema = new mongoose.Schema<LoanAccount>({
   name: {
     type: String,
     unique: true,
@@ -8,18 +14,24 @@ const loanAccountSchema = new mongoose.Schema({
   description: String,
 });
 
-export const LoanAccount = mongoose.model('LoanAccount', loanAccountSchema);
+export const LoanAccountModel = mongoose.model(
+  'LoanAccount',
+  loanAccountSchema,
+);
 
 export const fetchLoanAccounts = async () => {
-  return await LoanAccount.find({});
+  return await LoanAccountModel.find({});
 };
 
 export const findLoanAccountById = (id: string) => {
-  return LoanAccount.findById(id).exec();
+  return LoanAccountModel.findById(id).exec();
 };
 
-export const insertLoanAccount = (name: string, description: string = '') => {
-  const loanAccount = new LoanAccount({
+export const insertLoanAccount = async (
+  name: string,
+  description: string = '',
+) => {
+  const loanAccount = await new LoanAccountModel({
     name,
     description,
   }).save();
