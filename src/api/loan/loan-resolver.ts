@@ -63,10 +63,12 @@ const mutationResolvers: MutationResolvers = {
     return {
       ...loan,
       id: loan.id.toString(),
-      guarantor: {
-        id: loan.guarantor?.id,
-        name: loan.guarantor?.name,
-      },
+      guarantor: loan.guarantor
+        ? {
+            id: loan.guarantor?.id,
+            name: loan.guarantor?.name,
+          }
+        : undefined,
     };
   },
 };
