@@ -4,6 +4,7 @@ import {
   QueryResolvers,
 } from '../../generated/graphql-types';
 import { fetchLoanById, fetchLoans, insertLoan } from '../../models/loan/loan';
+import { getLoanDetails } from '../../services/loan/loan-details';
 
 const queryResolvers: QueryResolvers = {
   getLoansList: async () => {
@@ -28,24 +29,7 @@ const queryResolvers: QueryResolvers = {
     return ls;
   },
   getLoanDetails: async (parent, { loanId }) => {
-    const loan = await fetchLoanById(loanId);
-    return {
-      loan: {
-        ...loan,
-        id: loan.id.toString(),
-        date: loan.startingDate,
-        guarantor: loan.guarantor
-          ? {
-              name: loan.guarantor?.name,
-              id: loan.guarantor?.id.toString(),
-            }
-          : undefined,
-      },
-      totalInterestEarned: 1,
-      cagr: 1,
-      absoluteReturn: 1,
-      status: 'READy',
-    };
+    return getLoanDetails(loanId);
   },
 };
 

@@ -50,6 +50,8 @@ export const calculateSimpleInterestByMonthlyRate = (
   const intervalDays = interval.length('days');
   const interestRateByDay = new Decimal(interestRate).dividedBy(30);
 
+  // We will have to consider 30 day per month in order to calculate monthly rate interest
+  // TODO:: calculate interest per month, then add pro-rated rate for last month days
   return interestRateByDay
     .mul(principal)
     .mul(intervalDays)
@@ -61,6 +63,7 @@ const convertLoanModelToplain = (loan: LoanWithAccountAndGuarantor): Loan => {
   return {
     ...loan,
     id: loan.id.toString(),
+    date: loan.startingDate,
     guarantor: loan.guarantor
       ? {
           id: loan.guarantor?.id,
@@ -71,14 +74,23 @@ const convertLoanModelToplain = (loan: LoanWithAccountAndGuarantor): Loan => {
 };
 
 const calculateInterestEarnedByLoan = (loan: Loan) => {
-  return calculateSimpleInterest(loan.interestRate, loan.principal, new Date(loan.date), new Date())
-}
+  return calculateSimpleInterest(
+    loan.interestRate,
+    loan.principal,
+    new Date(loan.date),
+    new Date(),
+  );
+};
 
 export const getLoanDetails = async (loanId: string) => {
   const loan = await fetchLoanById(loanId);
+  const transformedLoan = convertLoanModelToplain(loan);
 
   return {
-    loan: convertLoanModelToplain(loan),
-    interestEarned: calculateSimpleInterest(loan.)
+    loan: transformedLoan,
+    totalInterestEarned: calculateInterestEarnedByLoan(transformedLoan),
+    cagr: 1,
+    absoluteReturn: 1,
+    status: 'ONGOING',
   };
 };

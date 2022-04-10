@@ -1,5 +1,8 @@
 import { MutationResolvers } from '../../generated/graphql-types';
-import { calculateSimpleInterest } from '../../services/loan/loan-details';
+import {
+  calculateSimpleInterest,
+  calculateSimpleInterestByMonthlyRate,
+} from '../../services/loan/loan-details';
 
 export const mutationResolvers: MutationResolvers = {
   getSimpleInterest: async (
@@ -8,6 +11,20 @@ export const mutationResolvers: MutationResolvers = {
   ) => {
     return {
       amount: calculateSimpleInterest(interestRate, principal, start, end),
+    };
+  },
+
+  getInterestByMonthlyRate: async (
+    parent,
+    { interestRate, principal, start, end },
+  ) => {
+    return {
+      amount: calculateSimpleInterestByMonthlyRate(
+        interestRate,
+        principal,
+        start,
+        end,
+      ),
     };
   },
 };

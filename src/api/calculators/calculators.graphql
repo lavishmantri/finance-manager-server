@@ -11,7 +11,7 @@ type Mutation {
   ): InterestResponse!
 
   getInterestByMonthlyRate(
-    interestRate: Int!
+    interestRate: Float!
     principal: Int!
     start: Date!
     end: Date!
