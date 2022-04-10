@@ -1,0 +1,19 @@
+type InterestResponse {
+  amount: Long!
+}
+
+type Mutation {
+  getSimpleInterest(
+    interestRate: Int!
+    principal: Int!
+    start: Date!
+    end: Date!
+  ): InterestResponse!
+
+  getInterestByMonthlyRate(
+    interestRate: Int!
+    principal: Int!
+    start: Date!
+    end: Date!
+  ): InterestResponse!
+}

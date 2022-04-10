@@ -10,14 +10,23 @@ type Loan {
   loanAccount: LoanAccount!
   basis: LoanBasis!
   duration: String
-  date: String
+  date: Date!
   notes: String
   guarantor: GuarantorAccount
   tags: [String]
 }
 
+type LoanDetailsResponse {
+  loan: Loan
+  totalInterestEarned: Int!
+  cagr: Int
+  absoluteReturn: Int
+  status: String!
+}
+
 type Query {
   getLoansList: [Loan!]
+  getLoanDetails(loanId: String): LoanDetailsResponse!
 }
 
 type Mutation {
@@ -27,7 +36,7 @@ type Mutation {
     loanAccount: String!
     basis: LoanBasis!
     duration: String
-    date: String
+    date: String!
     notes: String
     guarantor: String
     tags: [String]

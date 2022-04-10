@@ -21,18 +21,18 @@ interface Loan extends Document {
   interestRate: number;
   principal: number;
   estimatedDuration?: number;
-  startingDate?: Date;
+  startingDate: Date;
   notes: string;
   basis: LoanBasis;
   tags: string[];
 }
 
-interface LoanWithRelations extends Loan {
+export interface LoanWithRelations extends Loan {
   loanAccount: ObjectId;
   guarantor: ObjectId;
 }
 
-interface LoanWithAccountAndGuarantor extends Loan {
+export interface LoanWithAccountAndGuarantor extends Loan {
   loanAccount: LoanAccount;
   guarantor?: GuarantorAccount;
 }
@@ -47,7 +47,10 @@ const loanSchema = new mongoose.Schema<LoanWithRelations>({
     required: true,
   },
   estimatedDuration: Number,
-  startingDate: Date,
+  startingDate: {
+    type: Date,
+    required: true,
+  },
   loanAccount: { type: ObjectId, ref: LoanAccountModel },
   notes: String,
   guarantor: { type: ObjectId, ref: GuarantorAccountModel },
@@ -70,18 +73,21 @@ export const fetchLoans = async (): Promise<LoanWithAccountAndGuarantor[]> => {
   // return loans;
   return loans.map(loan => ({
     ...loan.toObject({ virtuals: true }),
+    // TODO:: Needs fixing
   })) as unknown[] as LoanWithAccountAndGuarantor[];
-  // return loans.map(loan => ({
-  //   id: loan.get('id'),
-  //   interestRate: loan.get('interestRate'),
-  //   principal: loan.get('principal'),
-  //   loanAccount: loan.get('loanAccount'),
-  //   basis: loan.get('basis'),
-  //   date: loan.get('startingDate'),
-  //   notes: loan.get('notes'),
-  //   guarantor: loan.get('guarantor'),
-  //   tags: loan.get('tags'),
-  // }));
+};
+
+export const fetchLoanById = async (
+  id: string,
+): Promise<LoanWithAccountAndGuarantor> => {
+  const loan = await LoanModel.findById(id)
+    .populate<{ loanAccount: LoanAccount }>('loanAccount')
+    .populate<{ guarantor: GuarantorAccount }>('guarantor')
+    .exec();
+
+  return loan.toObject({
+    virtuals: true,
+  }) as unknown as LoanWithAccountAndGuarantor;
 };
 
 export const insertLoan = async (
@@ -89,7 +95,7 @@ export const insertLoan = async (
   principal: number,
   loanAccount: string,
   basis: LoanBasis,
-  date?: string,
+  date: string,
   notes?: string,
   guarantor?: string,
   tags?: string[],
@@ -114,6 +120,7 @@ export const insertLoan = async (
 
   return {
     ...loan.toObject({ virtuals: true }),
+    date: loan.startingDate,
     loanAccount: loanAccountInstance,
     guarantor: guarantorAccountInstance,
   };

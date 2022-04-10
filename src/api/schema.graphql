@@ -4,3 +4,4 @@ scalar JSONObject
 scalar Long
 scalar GUID
 scalar Upload
+scalar Date
