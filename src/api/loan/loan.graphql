@@ -16,12 +16,15 @@ type Loan {
   tags: [String]
 }
 
-type LoanDetailsResponse {
-  loan: Loan
-  totalInterestEarned: Int!
-  cagr: Int
-  absoluteReturn: Int
+type LoanComputedDetails {
+  totalInterestEarned: Float!
+  xirr: Float
   status: String!
+}
+
+type LoanDetailsResponse {
+  loan: Loan!
+  loanComputedDetails: LoanComputedDetails!
 }
 
 type Query {
@@ -31,7 +34,7 @@ type Query {
 
 type Mutation {
   createLoan(
-    interestRate: Int!
+    interestRate: Float!
     principal: Int!
     loanAccount: String!
     basis: LoanBasis!

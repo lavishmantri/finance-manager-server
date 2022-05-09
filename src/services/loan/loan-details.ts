@@ -5,7 +5,11 @@ import {
   LoanWithRelations,
 } from '../../models/loan/loan';
 import { Decimal } from 'decimal.js';
-import { Loan } from '../../generated/graphql-types';
+import {
+  Loan,
+  LoanComputedDetails,
+  LoanDetailsResponse,
+} from '../../generated/graphql-types';
 
 /**
  *
@@ -82,15 +86,18 @@ const calculateInterestEarnedByLoan = (loan: Loan) => {
   );
 };
 
-export const getLoanDetails = async (loanId: string) => {
+export const getLoanDetails = async (
+  loanId: string,
+): Promise<LoanDetailsResponse> => {
   const loan = await fetchLoanById(loanId);
   const transformedLoan = convertLoanModelToplain(loan);
 
   return {
     loan: transformedLoan,
-    totalInterestEarned: calculateInterestEarnedByLoan(transformedLoan),
-    cagr: 1,
-    absoluteReturn: 1,
-    status: 'ONGOING',
+    loanComputedDetails: {
+      totalInterestEarned: calculateInterestEarnedByLoan(transformedLoan),
+      xirr: 8.3,
+      status: 'ONGOING',
+    },
   };
 };

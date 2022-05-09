@@ -11,7 +11,6 @@ const queryResolvers: QueryResolvers = {
     const loans = await fetchLoans();
     console.log('getLoansList resolver  ', loans);
 
-    // return loans;
     const ls = loans.map(l => ({
       ...l,
       id: l.id.toString(),
@@ -23,8 +22,6 @@ const queryResolvers: QueryResolvers = {
           }
         : undefined,
     }));
-
-    // console.log('loans list resolver transformed:: ', ls);
 
     return ls;
   },
