@@ -1,15 +1,8 @@
 import { DateTime, Interval } from 'luxon';
-import {
-  fetchLoanById,
-  LoanWithAccountAndGuarantor,
-  LoanWithRelations,
-} from '../../models/loan/loan';
+import { fetchLoanById } from '../../models/loan/loan';
 import { Decimal } from 'decimal.js';
-import {
-  Loan,
-  LoanComputedDetails,
-  LoanDetailsResponse,
-} from '../../generated/graphql-types';
+import { Loan, LoanDetailsResponse } from '../../generated/graphql-types';
+import { convertLoanModelToplain } from './loan-utils';
 
 /**
  *
@@ -61,20 +54,6 @@ export const calculateSimpleInterestByMonthlyRate = (
     .mul(intervalDays)
     .dividedBy(100)
     .toNumber();
-};
-
-const convertLoanModelToplain = (loan: LoanWithAccountAndGuarantor): Loan => {
-  return {
-    ...loan,
-    id: loan.id.toString(),
-    date: loan.startingDate,
-    guarantor: loan.guarantor
-      ? {
-          id: loan.guarantor?.id,
-          name: loan.guarantor?.name,
-        }
-      : undefined,
-  };
 };
 
 const calculateInterestEarnedByLoan = (loan: Loan) => {

@@ -5,6 +5,7 @@ import {
 } from '../../generated/graphql-types';
 import { fetchLoanById, fetchLoans, insertLoan } from '../../models/loan/loan';
 import { getLoanDetails } from '../../services/loan/loan-details';
+import { computeLoanAggregations } from '../../services/loan/loan-aggregations';
 
 const queryResolvers: QueryResolvers = {
   getLoansList: async () => {
@@ -23,7 +24,10 @@ const queryResolvers: QueryResolvers = {
         : undefined,
     }));
 
-    return ls;
+    return {
+      loans: ls,
+      loanListAggregationDetails: computeLoanAggregations(loans),
+    };
   },
   getLoanDetails: async (parent, { loanId }) => {
     return getLoanDetails(loanId);
