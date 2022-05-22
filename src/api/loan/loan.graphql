@@ -18,14 +18,14 @@ type Loan {
 
 type LoanListAggregationDetails {
   totalPrincipalInvested: Int!
-  netCAGR: Float
+  netXIRR: Float
   absoluteReturns: Float
-  expectedPostClosureCAGR: Float
+  expectedPostClosureXIRR: Float
+  averageInterestRate: Float!
 }
 
 type LoanListResponse {
   loans: [Loan!]
-  loanListAggregationDetails: LoanListAggregationDetails!
 }
 
 type LoanComputedDetails {
@@ -41,6 +41,7 @@ type LoanDetailsResponse {
 
 type Query {
   getLoansList: LoanListResponse!
+  getLoansListAggregationDetails: LoanListAggregationDetails!
   getLoanDetails(loanId: String): LoanDetailsResponse!
 }
 

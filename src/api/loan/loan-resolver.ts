@@ -26,8 +26,22 @@ const queryResolvers: QueryResolvers = {
 
     return {
       loans: ls,
-      loanListAggregationDetails: computeLoanAggregations(loans),
     };
+  },
+  getLoansListAggregationDetails: async () => {
+    const loans = await fetchLoans();
+    const ls = loans.map(l => ({
+      ...l,
+      id: l.id.toString(),
+      date: l.startingDate,
+      guarantor: l.guarantor
+        ? {
+            name: l.guarantor?.name,
+            id: l.guarantor?.id.toString(),
+          }
+        : undefined,
+    }));
+    return computeLoanAggregations(loans);
   },
   getLoanDetails: async (parent, { loanId }) => {
     return getLoanDetails(loanId);

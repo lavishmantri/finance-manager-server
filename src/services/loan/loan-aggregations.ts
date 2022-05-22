@@ -9,6 +9,10 @@ import {
   LoanWithAccountAndGuarantor,
   LoanWithRelations,
 } from '../../models/loan/loan';
+import {
+  calculateSimpleInterest,
+  calculateSimpleInterestPerYear,
+} from './loan-details';
 import { convertLoanModelToplain } from './loan-utils';
 
 export const computeAbsoluteReturnsForLoans = (
@@ -17,13 +21,32 @@ export const computeAbsoluteReturnsForLoans = (
   return 18;
 };
 
-export const computeExpectedPostClosureCAGR = (
+export const computeAvgInterestRate = (
   loans: LoanWithAccountAndGuarantor[],
 ) => {
-  return 15;
+  const netPrincipal = loans.reduce(
+    (prevValue: number, currValue: LoanWithAccountAndGuarantor) => {
+      prevValue = prevValue + currValue.principal;
+      return prevValue;
+    },
+    0,
+  );
+
+  let sum = 0;
+  let totalInterestAmount = 0;
+  loans.forEach(loan => {
+    sum += loan.principal;
+    totalInterestAmount += loan.principal * loan.interestRate;
+  });
+
+  return totalInterestAmount / netPrincipal;
 };
 
-export const computeNetCAGR = () => 0;
+export const computeExpectedPostClosureXIRR = () => 0;
+
+export const computeNetXIRR = () => {
+  return 0;
+};
 
 export const computeLoanAggregations = (
   loans: LoanWithAccountAndGuarantor[],
@@ -39,8 +62,9 @@ export const computeLoanAggregations = (
 
   return {
     totalPrincipalInvested,
-    netCAGR: computeNetCAGR(),
-    expectedPostClosureCAGR: computeExpectedPostClosureCAGR(loans),
+    netXIRR: computeNetXIRR(),
+    expectedPostClosureXIRR: computeExpectedPostClosureXIRR(),
     absoluteReturns: computeAbsoluteReturnsForLoans(loans),
+    averageInterestRate: computeAvgInterestRate(loans),
   };
 };
