@@ -125,3 +125,7 @@ export const insertLoan = async (
     guarantor: guarantorAccountInstance,
   };
 };
+
+export const deleteLoan = async (loanId: string) => {
+  await LoanModel.deleteOne({ id: loanId });
+};

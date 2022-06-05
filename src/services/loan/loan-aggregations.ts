@@ -24,20 +24,16 @@ export const computeAbsoluteReturnsForLoans = (
 export const computeAvgInterestRate = (
   loans: LoanWithAccountAndGuarantor[],
 ) => {
-  const netPrincipal = loans.reduce(
-    (prevValue: number, currValue: LoanWithAccountAndGuarantor) => {
-      prevValue = prevValue + currValue.principal;
-      return prevValue;
-    },
-    0,
-  );
-
-  let sum = 0;
+  let netPrincipal = 0;
   let totalInterestAmount = 0;
   loans.forEach(loan => {
-    sum += loan.principal;
+    netPrincipal += loan.principal;
     totalInterestAmount += loan.principal * loan.interestRate;
   });
+
+  if (netPrincipal === 0) {
+    return 0;
+  }
 
   return totalInterestAmount / netPrincipal;
 };

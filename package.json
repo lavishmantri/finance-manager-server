@@ -4,7 +4,7 @@
   "description": "Server code for finman",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "nodemon src/index.ts",
     "debug": "node --inspect=9229 -r ts-node/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "codegen": "graphql-codegen --config codegen.yml"
@@ -35,6 +35,7 @@
     "@graphql-codegen/typescript": "2.4.8",
     "@graphql-codegen/typescript-resolvers": "2.6.1",
     "@types/luxon": "^2.3.1",
+    "nodemon": "^2.0.16",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   }

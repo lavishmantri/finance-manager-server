@@ -39,6 +39,15 @@ type LoanDetailsResponse {
   loanComputedDetails: LoanComputedDetails!
 }
 
+enum APIStatus {
+  SUCCESS
+  FAILURE
+}
+
+type LoanDeleteResponse {
+  status: APIStatus
+}
+
 type Query {
   getLoansList: LoanListResponse!
   getLoansListAggregationDetails: LoanListAggregationDetails!
@@ -57,4 +66,5 @@ type Mutation {
     guarantor: String
     tags: [String]
   ): Loan!
+  deleteLoan(loanId: String!): LoanDeleteResponse!
 }

@@ -4,6 +4,12 @@ import { Decimal } from 'decimal.js';
 import { Loan, LoanDetailsResponse } from '../../generated/graphql-types';
 import { convertLoanModelToplain } from './loan-utils';
 
+/**
+ *
+ * @param interestRate
+ * @param principal
+ * @returns - simple interest
+ */
 export const calculateSimpleInterestPerYear = (
   interestRate: number,
   principal: number,
@@ -15,8 +21,8 @@ export const calculateSimpleInterestPerYear = (
  *
  * @param interestRate - yearly interest rate
  * @param principal
- * @param from
- * @param till
+ * @param start
+ * @param end
  * @returns
  */
 export const calculateSimpleInterest = (

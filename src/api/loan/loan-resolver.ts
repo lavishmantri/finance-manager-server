@@ -1,9 +1,15 @@
 import {
+  APIStatus,
   Loan,
   MutationResolvers,
   QueryResolvers,
 } from '../../generated/graphql-types';
-import { fetchLoanById, fetchLoans, insertLoan } from '../../models/loan/loan';
+import {
+  deleteLoan,
+  fetchLoanById,
+  fetchLoans,
+  insertLoan,
+} from '../../models/loan/loan';
 import { getLoanDetails } from '../../services/loan/loan-details';
 import { computeLoanAggregations } from '../../services/loan/loan-aggregations';
 
@@ -84,6 +90,12 @@ const mutationResolvers: MutationResolvers = {
             name: loan.guarantor?.name,
           }
         : undefined,
+    };
+  },
+  deleteLoan: async (parent, { loanId }) => {
+    await deleteLoan(loanId);
+    return {
+      status: APIStatus.SUCCESS,
     };
   },
 };
