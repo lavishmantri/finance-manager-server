@@ -16,7 +16,6 @@ import { computeLoanAggregations } from '../../services/loan/loan-aggregations';
 const queryResolvers: QueryResolvers = {
   getLoansList: async () => {
     const loans = await fetchLoans();
-    console.log('getLoansList resolver  ', loans);
 
     const ls = loans.map(l => ({
       ...l,
@@ -80,7 +79,6 @@ const mutationResolvers: MutationResolvers = {
       tags,
     );
 
-    console.log('Loan created:: ', loan);
     return {
       ...loan,
       id: loan.id.toString(),

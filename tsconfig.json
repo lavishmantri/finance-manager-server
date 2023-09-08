@@ -10,9 +10,6 @@
   "ts-node": {
     "files": true
   },
-  "files": [
-    "src/index.ts",
-    "src/graphql.d.ts"
-  ],
+  "files": ["src/index.ts", "src/graphql.d.ts"],
   "lib": ["es2015"]
 }

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-// NOTE:: Debit cards debit from BANK ACCOUNT only. We need to make this implied
-
 enum AccountType {
   BANK_ACCOUNT = 'BANK_ACCOUNT',
+  // NOTE:: Although debit card directly debits from Bank account. there maybe charges it levies
+  DEBIT_CARD = 'DEBIT_CARD',
   CREDIT_CARD = 'CREDIT_CARD_ACCOUNT',
   LOAN = 'LOAN_ACCOUNT',
   E_WALLET = 'E_WALLET',

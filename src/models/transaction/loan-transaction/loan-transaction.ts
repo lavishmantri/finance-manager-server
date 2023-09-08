@@ -5,7 +5,6 @@ import {
   LoanAccount,
   LoanAccountModel,
 } from '../../account/loan-account/loan-account';
-import { GuarantorAccount } from '../../account/guarantor-account/guarantor-account';
 
 enum LoanTransactionType {
   NOT_DEFINED = 'NOT_DEFINED',
@@ -13,8 +12,17 @@ enum LoanTransactionType {
   PRINCIPAL_REPAYMENT = 'PRINCIPAL_REPAYMENT',
 }
 
-const loanTransactionSchema = new mongoose.Schema({
-  to: { type: ObjectId, ref: LoanAccountModel },
+export interface LoanTransaction extends Document {
+  id: ObjectId;
+  loanId: ObjectId;
+  amount: number;
+  type: LoanTransactionType;
+  date: string;
+  notes?: string;
+}
+
+const loanTransactionSchema = new mongoose.Schema<LoanTransaction>({
+  loanId: { type: ObjectId, ref: LoanAccountModel },
   amount: Number,
   type: {
     type: String,
@@ -30,8 +38,30 @@ export const LoanTransactionModel = mongoose.model(
   loanTransactionSchema,
 );
 
-// TODO:: need to adapt to new schema
+export const fetchLoanTransactions = async (): Promise<LoanTransaction[]> => {
+  const loanTransactions = await LoanTransactionModel.find({});
+  return loanTransactions;
+};
 
+export const insertLoanTransaction = async (
+  loanId: string,
+  amount: number,
+  date: string,
+  type: LoanTransactionType,
+  notes,
+) => {
+  const loanTransaction = await new LoanTransactionModel({
+    to: loanId,
+    amount,
+    date,
+    type,
+    notes,
+  }).save();
+
+  return loanTransaction;
+};
+
+// TODO:: need to adapt to new schema
 export const insertManyLoanTransactions = async (records: string[][]) => {
   await records.forEach(async record => {
     let insertedLoan;
@@ -53,7 +83,7 @@ export const insertManyLoanTransactions = async (records: string[][]) => {
     await new LoanTransactionModel({
       to: loan._id,
       amount: record[1] ? Number.parseInt(record[1]) : 0,
-      startDate: new Date(record[2]),
+      date: new Date(record[2]),
       type: LoanTransactionType.INTEREST_PAYMENT,
       notes: record[5],
     }).save();

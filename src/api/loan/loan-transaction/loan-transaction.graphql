@@ -1,0 +1,38 @@
+enum LoanTransactionType {
+  NOT_DEFINED
+  INTEREST_PAYMENT
+  PRINCIPAL_REPAYMENT
+}
+
+type LoanTransaction {
+  id: String!
+  amount: Int!
+  loanId: String!
+  notes: String
+  type: LoanTransactionType
+  date: String
+}
+
+enum APIStatus {
+  SUCCESS
+  FAILURE
+}
+
+type LoanTransactionCreateResponse {
+  status: APIStatus!
+  loanTransaction: LoanTransaction!
+}
+
+type Query {
+  getLoanTransactions: [LoanTransaction]
+}
+
+type Mutation {
+  createLoanTransaction(
+    loanId: String!
+    type: LoanTransactionType!
+    amount: Int!
+    date: String!
+    notes: String
+  ): LoanTransactionCreateResponse
+}
