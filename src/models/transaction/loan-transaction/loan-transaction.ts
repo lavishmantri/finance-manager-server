@@ -38,8 +38,10 @@ export const LoanTransactionModel = mongoose.model(
   loanTransactionSchema,
 );
 
-export const fetchLoanTransactions = async (): Promise<LoanTransaction[]> => {
-  const loanTransactions = await LoanTransactionModel.find({});
+export const fetchLoanTransactions = async (
+  loanId: string,
+): Promise<LoanTransaction[]> => {
+  const loanTransactions = await LoanTransactionModel.find({ loanId });
   return loanTransactions;
 };
 

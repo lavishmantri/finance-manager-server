@@ -24,7 +24,7 @@ type LoanTransactionCreateResponse {
 }
 
 type Query {
-  getLoanTransactions: [LoanTransaction]
+  getLoanTransactions(loanId: String!): [LoanTransaction]
 }
 
 type Mutation {

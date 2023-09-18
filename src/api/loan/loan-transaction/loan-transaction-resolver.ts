@@ -29,8 +29,8 @@ const convertLoanTransactionDocuments = (
 };
 
 const queryResolvers: QueryResolvers = {
-  getLoanTransactions: async () => {
-    const loanTransactionDocuments = await fetchLoanTransactions();
+  getLoanTransactions: async (parent, { loanId }) => {
+    const loanTransactionDocuments = await fetchLoanTransactions(loanId);
     return convertLoanTransactionDocuments(loanTransactionDocuments);
   },
 };
