@@ -38,3 +38,9 @@ export const insertLoanAccount = async (
 
   return loanAccount.toObject({ virtuals: true });
 };
+
+export const deleteLoanAccount = async (loanId: string) => {
+  const deleteResult = await LoanAccountModel.deleteOne({ id: loanId });
+
+  return deleteResult.acknowledged;
+};

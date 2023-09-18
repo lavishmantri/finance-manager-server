@@ -16,4 +16,6 @@ type Mutation {
     "Any useful description of the account that we must keep track of"
     description: String
   ): LoanAccount!
+
+  deleteLoanAccount(id: String!): APIresponse!
 }

@@ -1,9 +1,11 @@
 import uuid from 'uuid';
 import {
+  APIStatus,
   MutationResolvers,
   QueryResolvers,
 } from '../../../generated/graphql-types';
 import {
+  deleteLoanAccount,
   fetchLoanAccounts,
   insertLoanAccount,
 } from '../../../models/account/loan-account/loan-account';
@@ -30,6 +32,20 @@ const loanAccountMutationResolver: MutationResolvers = {
     console.log('Loan account resolved  ', loan);
 
     return loan;
+  },
+
+  deleteLoanAccount: async (parent, { id }) => {
+    let apiSuccess;
+
+    try {
+      apiSuccess = await deleteLoanAccount(id);
+    } catch (e) {
+      throw e;
+    }
+
+    return {
+      status: apiSuccess ? APIStatus.SUCCESS : APIStatus.FAILURE,
+    };
   },
 };
 

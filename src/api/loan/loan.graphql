@@ -45,15 +45,6 @@ type LoanDetailsResponse {
   loanComputedDetails: LoanComputedDetails!
 }
 
-enum APIStatus {
-  SUCCESS
-  FAILURE
-}
-
-type APIresponse {
-  status: APIStatus
-}
-
 type Query {
   getLoansList: LoanListResponse!
   getLoansListAggregationDetails: LoanListAggregationDetails!

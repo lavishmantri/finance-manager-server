@@ -5,3 +5,12 @@ scalar Long
 scalar GUID
 scalar Upload
 scalar Date
+
+enum APIStatus {
+  SUCCESS
+  FAILURE
+}
+
+type APIresponse {
+  status: APIStatus
+}
