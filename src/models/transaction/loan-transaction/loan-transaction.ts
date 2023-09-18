@@ -53,7 +53,7 @@ export const insertLoanTransaction = async (
   notes,
 ) => {
   const loanTransaction = await new LoanTransactionModel({
-    to: loanId,
+    loanId,
     amount,
     date,
     type,

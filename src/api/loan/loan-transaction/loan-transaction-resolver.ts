@@ -17,6 +17,7 @@ const convertLoanTransactionDocument = (
     id: loanTransaction.id.toString(),
     loanId: loanTransaction.loanId.toString(),
     amount: loanTransaction.amount,
+    type: loanTransaction.type,
     date: loanTransaction.date,
     notes: loanTransaction.notes,
   };
@@ -47,7 +48,8 @@ const mutationResolvers: MutationResolvers = {
       type,
       notes,
     );
-    console.log('Loan transaction created:: ', loanTransaction);
+
+    console.log('LoanTransaction created: ', loanTransaction);
     return {
       status: APIStatus.SUCCESS,
       loanTransaction: convertLoanTransactionDocument(loanTransaction),
