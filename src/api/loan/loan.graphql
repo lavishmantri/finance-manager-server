@@ -3,6 +3,11 @@ enum LoanBasis {
   BASIS_2
 }
 
+enum LoanState {
+  OPEN
+  CLOSED
+}
+
 type Loan {
   id: String!
   interestRate: Int!
@@ -14,6 +19,7 @@ type Loan {
   notes: String
   guarantor: GuarantorAccount
   tags: [String]
+  state: LoanState!
 }
 
 type LoanListAggregationDetails {
@@ -44,7 +50,7 @@ enum APIStatus {
   FAILURE
 }
 
-type LoanDeleteResponse {
+type APIresponse {
   status: APIStatus
 }
 
@@ -66,5 +72,6 @@ type Mutation {
     guarantor: String
     tags: [String]
   ): Loan!
-  deleteLoan(loanId: String!): LoanDeleteResponse!
+  closeLoan(id: String!): APIresponse!
+  deleteLoan(loanId: String!): APIresponse!
 }

@@ -5,6 +5,7 @@ import {
   QueryResolvers,
 } from '../../generated/graphql-types';
 import {
+  closeLoan,
   deleteLoan,
   fetchLoanById,
   fetchLoans,
@@ -88,6 +89,16 @@ const mutationResolvers: MutationResolvers = {
             name: loan.guarantor?.name,
           }
         : undefined,
+    };
+  },
+  closeLoan: async (parent, { id }) => {
+    console.log('Close: ', id);
+    const updateAck = await closeLoan(id);
+
+    const loan = await fetchLoanById(id);
+    console.log('Loan: ', loan);
+    return {
+      status: updateAck ? APIStatus.SUCCESS : APIStatus.FAILURE,
     };
   },
   deleteLoan: async (parent, { loanId }) => {

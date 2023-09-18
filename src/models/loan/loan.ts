@@ -16,6 +16,11 @@ enum LoanBasis {
   BASIS_2 = 'BASIS_2',
 }
 
+enum LoanState {
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+}
+
 interface Loan extends Document {
   id: ObjectId;
   interestRate: number;
@@ -25,6 +30,7 @@ interface Loan extends Document {
   notes: string;
   basis: LoanBasis;
   tags: string[];
+  state: LoanState;
 }
 
 export interface LoanWithRelations extends Loan {
@@ -60,6 +66,12 @@ const loanSchema = new mongoose.Schema<LoanWithRelations>({
     required: true,
   },
   tags: [String],
+  state: {
+    type: String,
+    enum: LoanState,
+    required: true,
+    default: LoanState.OPEN,
+  },
 });
 
 export const LoanModel = mongoose.model<LoanWithRelations>('Loan', loanSchema);
@@ -116,6 +128,7 @@ export const insertLoan = async (
     notes,
     guarantor: guarantorAccountInstance?._id,
     tags,
+    state: LoanState.OPEN,
   }).save();
 
   return {
@@ -124,6 +137,23 @@ export const insertLoan = async (
     loanAccount: loanAccountInstance,
     guarantor: guarantorAccountInstance,
   };
+};
+
+export const closeLoan = async (loanId: string) => {
+  console.log('LoanId upsert: ', loanId);
+  const updateResult = await LoanModel.updateOne(
+    { _id: loanId },
+    { $set: { state: LoanState.CLOSED } },
+  );
+  console.log(
+    'Update result: ',
+    updateResult.acknowledged,
+    updateResult.modifiedCount,
+    updateResult.matchedCount,
+    updateResult.upsertedCount,
+    updateResult.upsertedId,
+  );
+  return updateResult.acknowledged;
 };
 
 export const deleteLoan = async (loanId: string) => {
