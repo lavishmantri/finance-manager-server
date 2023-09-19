@@ -5,6 +5,7 @@ scalar Long
 scalar GUID
 scalar Upload
 scalar Date
+scalar IntStringBool
 
 enum APIStatus {
   SUCCESS

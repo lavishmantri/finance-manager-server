@@ -122,7 +122,7 @@ export const insertLoan = async (
   const loan = await new LoanModel({
     interestRate,
     principal,
-    loanAccount: loanAccountInstance._id,
+    loanAccount: loanAccountInstance?._id,
     basis,
     startingDate: date,
     notes,
@@ -140,19 +140,11 @@ export const insertLoan = async (
 };
 
 export const closeLoan = async (loanId: string) => {
-  console.log('LoanId upsert: ', loanId);
   const updateResult = await LoanModel.updateOne(
     { _id: loanId },
     { $set: { state: LoanState.CLOSED } },
   );
-  console.log(
-    'Update result: ',
-    updateResult.acknowledged,
-    updateResult.modifiedCount,
-    updateResult.matchedCount,
-    updateResult.upsertedCount,
-    updateResult.upsertedId,
-  );
+
   return updateResult.acknowledged;
 };
 

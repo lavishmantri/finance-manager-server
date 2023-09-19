@@ -1,0 +1,22 @@
+type WorkbookMetadata {
+  additionalProperties: String
+}
+
+input WorkbookMetadataInput {
+  additionalProperties: String
+}
+
+type Workbook {
+  id: String!
+  name: String!
+  metadata: WorkbookMetadata
+}
+
+type Query {
+  getWorkbookList: [Workbook]
+}
+
+type Mutation {
+  createWorkbook(name: String!): Workbook!
+  updateWorkbook(name: String, metadata: WorkbookMetadataInput): Workbook!
+}

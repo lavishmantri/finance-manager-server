@@ -1,0 +1,20 @@
+type SheetMetadata {
+  rowHeaders: Boolean
+  colHeaders: Boolean
+}
+
+type Sheet {
+  id: String!
+  name: String
+  workbookId: String
+  metadata: SheetMetadata
+  data: [[IntStringBool]]
+}
+
+type Query {
+  getSheetsList(workbookId: String): [Sheet]!
+}
+
+type Mutation {
+  updateData(id: String!, data: [[IntStringBool]]!): Sheet!
+}

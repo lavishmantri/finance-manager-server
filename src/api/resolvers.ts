@@ -4,8 +4,10 @@ import { uploadResolver } from './upload/upload-resolver';
 import { loanAccountResolver } from './account/loan-account/loan-account-resolver';
 import { loanResolver } from './loan/loan-resolver';
 import { loanTransactionResolver } from './loan/loan-transaction/loan-transaction-resolver';
-import { dateResolver } from './common/date-resolver';
+import { dateResolver, intStringResolver } from './common/date-resolver';
 import { calculatorsResolver } from './calculators/calculator-resolvers';
+import { workbookResolver } from './workbook/workbook-resolver';
+import { sheetResolver } from './workbook/sheet/sheet-resolver';
 
 export const resolvers = merge(
   transactionResolver,
@@ -15,4 +17,7 @@ export const resolvers = merge(
   loanTransactionResolver,
   dateResolver,
   calculatorsResolver,
+  workbookResolver,
+  sheetResolver,
+  intStringResolver,
 );
