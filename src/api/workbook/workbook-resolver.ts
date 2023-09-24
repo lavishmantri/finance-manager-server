@@ -11,8 +11,8 @@ const queryResolvers: QueryResolvers = {
 
     return workBooks.map(workbook => {
       return {
-        ...workbook,
         id: workbook.id.toString(),
+        name: workbook.name,
       };
     });
   },

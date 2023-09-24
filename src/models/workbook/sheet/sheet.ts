@@ -44,6 +44,11 @@ export const fetchSheets = async (workbookId?: string): Promise<Sheet[]> => {
   }).exec();
 };
 
+export const findSheetById = async (sheetId: string) => {
+  console.log('Find by sheetId: ', sheetId);
+  return await SheetModel.findById({ _id: sheetId });
+};
+
 export const createSheetInWorkbook = async (
   workbookId: string,
   name: string,
@@ -61,10 +66,13 @@ export const createSheetInWorkbook = async (
 
 export const updateSheetData = async (
   sheetId: string,
-  data: (string | number)[][],
+  data: (string | number | boolean | null)[][],
 ) => {
+  console.log('update sheet data: ', sheetId);
   const updateResult = await SheetModel.updateOne(
     { _id: sheetId },
-    { $set: { state: data } },
+    { $set: { data: data } },
   );
+
+  return updateResult.acknowledged;
 };
