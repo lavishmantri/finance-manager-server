@@ -56,11 +56,7 @@ export const createSheetInWorkbook = async (
   return await SheetModel.create({
     workbookId,
     name,
-    data: [
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', ''],
-    ],
+    data: [[]],
   });
 };
 

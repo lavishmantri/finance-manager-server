@@ -4,6 +4,7 @@ import {
   QueryResolvers,
 } from '../../../generated/graphql-types';
 import {
+  createSheetInWorkbook,
   fetchSheets,
   findSheetById,
   updateSheetData,
@@ -27,15 +28,23 @@ const queryResolvers: QueryResolvers = {
 };
 
 export const mutationResolvers: MutationResolvers = {
-  updateData: async (parent, { id, data }) => {
-    const success = await updateSheetData(id, data);
-    const sheetDocument = await findSheetById(id);
+  createSheetInWorkbook: async (parent, { workbookId }) => {
+    const sheetDocument = await createSheetInWorkbook(
+      workbookId,
+      'Untitled Sheet',
+    );
 
-    console.log('Sheet1: ', success, sheetDocument);
     return {
       id: sheetDocument.id.toString(),
-      name: sheetDocument.name,
       data: sheetDocument.data,
+      name: sheetDocument.name,
+    };
+  },
+  updateData: async (parent, { id, data }) => {
+    const success = await updateSheetData(id, data);
+
+    return {
+      status: success ? APIStatus.SUCCESS : APIStatus.FAILURE,
     };
   },
 };
